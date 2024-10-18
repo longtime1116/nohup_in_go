@@ -14,11 +14,17 @@
 - golangのプロセスをkill
 
 # 背景
-- ラズパイ4の環境で手順Aでコードが実行された時、nohupで呼び出された shell script のプロセスも死んでしまった。
+- ラズパイ4の環境で手順Aが実行された時、nohupで呼び出された shell script のプロセスも死んでしまった。
 - nohup は非同期での実行なので、親プロセスが死んでも挙動に影響がないと思ったので、違和感を感じた。
 - 調べてみることにした。
 
-# 結果
+# 結論
+- やはりnohupは非同期実行なので、親プロセスがkillされても生き続ける。
+- 背景に書いた問題が発生したのは、systemd経由で起動されたからだった。
+  - systemdは、サービスとして起動したプロセスを管理する際に特定のコントロールグループ（cgroup）に属させる。
+  - サービスが停止されると、このcgroupに紐づく全てのプロセスをデフォルトで終了させる。
+- systemdのkillの挙動を変えることはできるようだ
+  - https://man7.org/linux/man-pages/man5/systemd.kill.5.html
 
 
 
@@ -59,4 +65,4 @@ tokinaga         21692   0.0  0.0 410742480   1616 s018  S+   10:34AM   0:00.00 
 [tokinaga:/Users/tokinaga/develop/nohup_in_go]$
 ```
 
-go のプロセス殺しても、stdoutに”main.go runnnin...” が流れ続ける・・・
+go のプロセス殺しても、やはりsleep.shは生き残っている
