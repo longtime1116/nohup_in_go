@@ -42,3 +42,21 @@ tokinaga         74893   0.1  0.0 410206416   1760 s020  S     8:54AM   0:00.04 
 tokinaga         75394   0.0  0.0 410724048   1296 s018  R+    8:54AM   0:00.01 grep -e sleep -e hup -e go_exec
 tokinaga         74892   0.0  0.0 410200272   1568 s020  S     8:53AM   0:00.00 /bin/sh ./scripts/hup.sh
 ```
+
+## go run ./go_exec/main.go false true
+
+```
+[tokinaga:/Users/tokinaga/develop/nohup_in_go]$ps aux | grep -e sleep -e hup -e go_exec
+tokinaga         21565   0.1  0.0 410068608    960 s029  S+   10:34AM   0:00.00 sleep 1
+tokinaga         21567   0.0  0.0 410733264   1456 s018  S+   10:34AM   0:00.00 grep -e sleep -e hup -e go_exec
+tokinaga         21559   0.0  0.0 410203344   1680 s029  S+   10:34AM   0:00.00 /bin/sh ./scripts/sleep.sh
+tokinaga         21543   0.0  0.1 411381360  21568 s029  S+   10:34AM   0:00.10 go run go_exec/main.go false true
+[tokinaga:/Users/tokinaga/develop/nohup_in_go]$kill -9 21543
+[tokinaga:/Users/tokinaga/develop/nohup_in_go]$ps aux | grep -e sleep -e hup -e go_exec
+tokinaga         21690   0.4  0.0 410068608    960 s029  S    10:34AM   0:00.00 sleep 1
+tokinaga         21559   0.1  0.0 410204368   1712 s029  S    10:34AM   0:00.01 /bin/sh ./scripts/sleep.sh
+tokinaga         21692   0.0  0.0 410742480   1616 s018  S+   10:34AM   0:00.00 grep -e sleep -e hup -e go_exec
+[tokinaga:/Users/tokinaga/develop/nohup_in_go]$
+```
+
+go のプロセス殺しても、stdoutに”main.go runnnin...” が流れ続ける・・・

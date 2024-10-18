@@ -23,8 +23,10 @@ func main() {
 
 	var cmd *exec.Cmd
 	if nohupGo {
+		fmt.Println("nohupGo")
 		cmd = exec.Command("nohup", "/bin/sh", scriptPath, "&")
 	} else {
+		fmt.Println("hupGo")
 		cmd = exec.Command("/bin/sh", scriptPath)
 	}
 	cmd.Stdout = os.Stdout
