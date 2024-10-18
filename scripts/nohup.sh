@@ -1,2 +1,2 @@
 #!/bin/sh
-nohup /bin/sh ./scripts/sleep.sh &
+nohup ./scripts/sleep.sh > sleep.log &
